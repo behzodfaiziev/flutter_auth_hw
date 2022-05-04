@@ -9,12 +9,21 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   bool isVisible = false;
 
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordController.dispose();
+    _passwordFocus.dispose();
+    _emailController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -32,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                controller: emailController,
+                controller: _emailController,
                 focusNode: _emailFocus,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
@@ -44,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
               ),
               TextField(
-                controller: passwordController,
+                controller: _passwordController,
                 focusNode: _passwordFocus,
                 obscureText: !isVisible,
                 keyboardType: TextInputType.text,
@@ -65,8 +74,8 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               const SizedBox(height: 50,),
               InkWell(
-                onTap: () => signIn(emailController.text.trim().toString(),
-                    passwordController.text.trim().toString(), context),
+                onTap: () => signIn(_emailController.text.trim().toString(),
+                    _passwordController.text.trim().toString(), context),
                 child: Container(
                  height: 40,
                   width: size.width*0.85,
